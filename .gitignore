@@ -1,0 +1,17 @@
+ssh/*
+.DS_Store
+.bundle
+Gemfile.lock
+db/*.sqlite3
+log/
+tmp/
+.sass-cache/
+.redcar/*
+.DS_Store
+._redcar/*
+.project
+coverage
+test/vcr_cassettes
+test/vcr_cassettes/*
+.idea/
+lib/assets/bower_components
