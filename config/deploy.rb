@@ -24,7 +24,7 @@ set :keep_releases, 5
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml}
+set :linked_files, []
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
@@ -68,13 +68,15 @@ namespace :deploy do
   # only allow a deploy with passing tests to deployed
   before :deploy, "deploy:run_tests"
 
-  after :finishing, 'deploy:cleanup'
-
-  before :publishing, 'deploy:setup_config'
+  after "deploy:run_tests", 'deploy:setup_config'
 
   # reload nginx to it will pick up any modified vhosts from
   # setup_config
-  after 'deploy:setup_config', 'nginx:reload'
+  after 'deploy:restart', 'nginx:reload'
 
-  after :publishing, 'deploy:restart'
+  after :deploy, "deploy:restart"
+
+  after :rollback, "deploy:restart"
+
+  after :finishing, 'deploy:cleanup'
 end
