@@ -16,8 +16,7 @@ server '46.51.219.23', user: 'ubuntu', roles: %w{web app}, primary: true
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, "/home/#{fetch(:deploy_user)}/apps/#{fetch(:full_app_name)}"
 
-# set :shared_path, "#{fetch(:deploy_to)}/shared"
-# set :current_path, "#{fetch(:deploy_to)}/current"
+set :shared_path, "#{fetch(:deploy_to)}/shared"
 
 # dont try and infer something as important as environment from
 # stage name.

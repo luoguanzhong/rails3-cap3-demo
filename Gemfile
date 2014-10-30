@@ -31,9 +31,11 @@ gem 'jquery-rails'
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-bundler'
-gem 'capistrano-rvm'
+group :development do
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rvm'
+end
 
 gem "rspec-rails", :group => [:test, :development]
 

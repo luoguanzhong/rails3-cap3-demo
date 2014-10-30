@@ -70,6 +70,8 @@ namespace :deploy do
 
   after "deploy:run_tests", 'deploy:setup_config'
 
+  after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
+
   # reload nginx to it will pick up any modified vhosts from
   # setup_config
   after 'deploy:restart', 'nginx:reload'

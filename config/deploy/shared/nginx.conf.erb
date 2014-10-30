@@ -1,4 +1,4 @@
-upstream unicorn {
+upstream unicorn_demo {
   server unix:/tmp/unicorn.<%= fetch(:full_app_name) %>.sock fail_timeout=0;
 }
 
@@ -11,19 +11,24 @@ server {
   access_log <%= fetch(:shared_path) %>/log/nginx-access.log;
   error_log <%= fetch(:shared_path) %>/log/nginx-error.log;
 
-  try_files $uri/index.html $uri @unicorn;
-  location @unicorn {
+  location ~* ^(/assets|/favicon.ico) {
+    access_log off;
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location @unicorn_demo {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
-    proxy_pass http://unicorn;
+    proxy_pass http://unicorn_demo;
   }
 
   error_page 404 422 /500.html;
   client_max_body_size 4G;
   keepalive_timeout 10;
 }
-
 <% if fetch(:enable_ssl) %>
 server {
   server_name <%= fetch(:server_name) %>;
@@ -33,13 +38,19 @@ server {
   access_log <%= fetch(:shared_path) %>/log/nginx-access.log;
   error_log <%= fetch(:shared_path) %>/log/nginx-error.log;
 
-  try_files $uri/index.html $uri @unicorn;
-  location @unicorn {
+  location ~* ^(/assets|/favicon.ico) {
+    access_log off;
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location @unicorn_demo {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header Host $http_host;
     proxy_redirect off;
-    proxy_pass http://unicorn;
+    proxy_pass http://unicorn_demo;
   }
 
   error_page 404 422 /500.html;
@@ -47,7 +58,7 @@ server {
   keepalive_timeout 10;
 
   ssl on;
-  ssl_certificate <%= fetch(:deploy_to) %>/shared/ssl_cert.crt;
-  ssl_certificate_key <%= fetch(:deploy_to) %>/shared/ssl_private_key.key;
+  ssl_certificate <%= fetch(:shared_path) %>/ssl_cert.crt;
+  ssl_certificate_key <%= fetch(:shared_path) %>/ssl_private_key.key;
 }
 <% end %>
