@@ -1,4 +1,5 @@
 upstream app_server {
+  #server 127.0.0.1:8080 fail_timeout=0;
   server unix:/tmp/unicorn.<%= fetch(:full_app_name) %>.sock fail_timeout=0;
 }
 
@@ -6,10 +7,10 @@ server {
   server_name <%= fetch(:server_name) %>;
   listen 8000;
 
-  root <%= fetch(:current_path) %>/public;
+  root <%= fetch(:deploy_to) %>/current/public;
 
-  access_log <%= fetch(:current_path) %>/log/nginx-access.log;
-  error_log <%= fetch(:current_path) %>/log/nginx-error.log;
+  access_log <%= fetch(:shared_path) %>/log/nginx-access.log;
+  error_log <%= fetch(:shared_path) %>/log/nginx-error.log;
   rewrite_log on;
 
   location ~* ^(/assets|/favicon.ico) {
@@ -40,10 +41,10 @@ server {
 server {
   server_name <%= fetch(:server_name) %>;
   listen 443;
-  root <%= fetch(:current_path) %>/public;
+  root <%= fetch(:deploy_to) %>/current/public;
 
-  access_log <%= fetch(:current_path) %>/log/nginx-access.log;
-  error_log <%= fetch(:current_path) %>/log/nginx-error.log;
+  access_log <%= fetch(:shared_path) %>/log/nginx-access.log;
+  error_log <%= fetch(:shared_path) %>/log/nginx-error.log;
 
   location ~* ^(/assets|/favicon.ico) {
     access_log off;
