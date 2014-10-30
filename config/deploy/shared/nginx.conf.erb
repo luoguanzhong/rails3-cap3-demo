@@ -1,5 +1,5 @@
 upstream unicorn_demo {
-  server unix:/tmp/unicorn.<%= fetch(:full_app_name) %>.sock fail_timeout=0;
+  server unix:<%= fetch(:shared_path) %>/<%= fetch(:full_app_name) %>.sock fail_timeout=0;
 }
 
 server {
@@ -16,6 +16,10 @@ server {
     gzip_static on;
     expires max;
     add_header Cache-Control public;
+  }
+
+  location / {
+    try_files $uri @unicorn_demo;
   }
 
   location @unicorn_demo {
@@ -43,6 +47,10 @@ server {
     gzip_static on;
     expires max;
     add_header Cache-Control public;
+  }
+
+  location / {
+    try_files $uri @unicorn_demo;
   }
 
   location @unicorn_demo {
