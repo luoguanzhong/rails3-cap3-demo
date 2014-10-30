@@ -30,3 +30,11 @@ before_fork do |server, worker|
     end
   end
 end
+
+after_fork do |server, worker|
+  port = 5000 + worker.nr
+  child_pid = server.config[:pid].sub('.pid', ".#{port}.pid")
+  system("echo #{Process.pid} > #{child_pid}")
+   defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.establish_connection
+end
