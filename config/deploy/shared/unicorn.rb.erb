@@ -4,6 +4,8 @@ pid "#{root}/tmp/pids/unicorn.pid"
 stderr_path "#{root}/log/unicorn.log"
 stdout_path "#{root}/log/unicorn.log"
 
+listen 5000, :tcp_nopush => false
+
 listen "/tmp/unicorn.<%= fetch(:full_app_name) %>.sock"
 worker_processes <%= fetch(:unicorn_worker_count) %>
 timeout 40
@@ -28,12 +30,4 @@ before_fork do |server, worker|
       puts "unicorn master already killed"
     end
   end
-end
-
-after_fork do |server, worker|
-  port = 5000 + worker.nr
-  child_pid = server.config[:pid].sub('.pid', ".#{port}.pid")
-  system("echo #{Process.pid} > #{child_pid}")
-   defined?(ActiveRecord::Base) and
-    ActiveRecord::Base.establish_connection
 end

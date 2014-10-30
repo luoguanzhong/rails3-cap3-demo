@@ -7,5 +7,5 @@ Demo::Application.configure do
   config.assets.compile = false
   config.assets.digest = true
   config.i18n.fallbacks = true
-  config.active_support.deprecation = :log
+  config.active_support.deprecation = :notify
 end
