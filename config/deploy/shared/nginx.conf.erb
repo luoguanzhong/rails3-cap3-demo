@@ -6,10 +6,10 @@ server {
   server_name <%= fetch(:server_name) %>;
   listen 8000;
 
-  root <%= fetch(:deploy_to) %>/current/public;
+  root <%= fetch(:current_path) %>/public;
 
-  access_log <%= fetch(:shared_path) %>/log/nginx-access.log;
-  error_log <%= fetch(:shared_path) %>/log/nginx-error.log;
+  access_log <%= fetch(:current_path) %>/log/nginx-access.log;
+  error_log <%= fetch(:current_path) %>/log/nginx-error.log;
   rewrite_log on;
 
   location ~* ^(/assets|/favicon.ico) {
@@ -40,10 +40,10 @@ server {
 server {
   server_name <%= fetch(:server_name) %>;
   listen 443;
-  root <%= fetch(:deploy_to) %>/current/public;
+  root <%= fetch(:current_path) %>/public;
 
-  access_log <%= fetch(:shared_path) %>/log/nginx-access.log;
-  error_log <%= fetch(:shared_path) %>/log/nginx-error.log;
+  access_log <%= fetch(:current_path) %>/log/nginx-access.log;
+  error_log <%= fetch(:current_path) %>/log/nginx-error.log;
 
   location ~* ^(/assets|/favicon.ico) {
     access_log off;
