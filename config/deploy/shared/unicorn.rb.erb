@@ -1,11 +1,10 @@
 root = "<%= current_path %>"
 working_directory root
 pid "#{root}/tmp/pids/unicorn.pid"
-stderr_path "#{root}/log/unicorn.log"
-stdout_path "#{root}/log/unicorn.log"
+stderr_path "#{root}/log/unicorn.stderr.log"
+stdout_path "#{root}/log/unicorn.stdout.log"
 
-#listen 8080, :tcp_nopush => true
-listen "/var/sockets/unicorn.<%= fetch(:full_app_name) %>.sock"
+listen "<%= fetch(:shared_path) %>/tmp/sockets/unicorn.<%= fetch(:full_app_name) %>.sock"
 worker_processes <%= fetch(:unicorn_worker_count) %>
 timeout 60
 preload_app true
