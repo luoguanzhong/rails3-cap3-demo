@@ -5,7 +5,7 @@ stderr_path "#{root}/log/unicorn.log"
 stdout_path "#{root}/log/unicorn.log"
 
 #listen 8080, :tcp_nopush => true
-listen "/tmp/unicorn.<%= fetch(:full_app_name) %>.sock"
+listen "/var/sockets/unicorn.<%= fetch(:full_app_name) %>.sock"
 worker_processes <%= fetch(:unicorn_worker_count) %>
 timeout 60
 preload_app true
